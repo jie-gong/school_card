@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>验证管理员权限</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/signin.css}" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("../static/img/6.jpg");
+            background-position: center 0;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -o-background-size: cover;
+            -moz-background-size: cover;
+            -ms-background-size: cover;
+        }
+    </style>
+</head>
+
+<body class="text-center">
+<form class="form-signin" th:action="@{/user/use}">
+    <h1 class="h3 mb-3 font-weight-normal">验证管理员权限</h1>
+    <p style="color: red" th:text="需验证您的管理员权限"></p>
+    <label class="sr-only">用户名</label>
+    <input type="text" name="admin" class="form-control" placeholder="请输入用户名" required="" autofocus="">
+    <label class="sr-only">密码</label>
+    <input type="password" name="adminpass" class="form-control" placeholder="请输入密码" required="">
+    <button class="btn btn-lg btn-primary btn-block" type="submit">重置学生密码</button>
+    <p class="mt-5 mb-3 text-muted">© 2022-2023</p>
+</form>
+</body>
+
+</html>

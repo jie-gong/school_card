@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>数据管理员登录</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/signin.css}" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("../static/img/6.jpg");
+            background-position: center 0;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -o-background-size: cover;
+            -moz-background-size: cover;
+            -ms-background-size: cover;
+        }
+    </style>
+</head>
+
+<body class="text-center">
+<form class="form-signin" th:action="@{/user/login}">
+    <h1 class="h3 mb-3 font-weight-normal">欢迎使用</h1>
+    <h5 class="h5 mb-3 font-weight-normal">校园数据管理系统（管理员登录）</h5>
+    <p style="color: red" th:text="${msg}"></p>
+    <label class="sr-only">用户名</label>
+    <input type="text" name="admin" class="form-control" placeholder="请输入用户名" required="" autofocus="">
+    <label class="sr-only">密码</label>
+    <input type="password" name="adminpass" class="form-control" placeholder="请输入密码" required="">
+    <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+    <p class="mt-5 mb-3 text-muted">© 2022-2023</p>
+    <a class="btn btn-sm" th:href="@{/student}">切换学生登陆</a>|
+    <a class="btn btn-sm" th:href="@{/retrieve}">学生密码忘记？重置学生密码</a>
+</form>
+</body>
+
+</html>

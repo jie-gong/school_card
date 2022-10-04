@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gong.school_card.mapper.UserMapper">
+    <update id="user" parameterType="com.gong.school_card.pojo.User">
+        update user
+        set password = #{password}
+        where username = #{username};
+    </update>
+    <select id="selectUser" resultType="com.gong.school_card.pojo.vo.UserAndStudent">
+        select u.studentid,
+               u.username,
+               u.password,
+               u.kay,
+               t.name
+        from student t,
+             user u
+        where t.studentid = u.studentid;
+    </select>
+
+    <select id="selectUserByName" resultType="com.gong.school_card.pojo.vo.UserAndStudent">
+        select s.studentid, u.username, u.password, u.kay, s.name
+        from student s,
+             user u
+        where name = #{name} and s.studentid=u.studentid;
+    </select>
+</mapper>

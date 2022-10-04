@@ -1,0 +1,23 @@
+spring:
+#  mvc:
+#    static-path-pattern: /static/**
+  datasource:
+    username: root
+    password: 1234
+    url: jdbc:mysql://localhost:3306/schoolcard?characterEncoding=UTF8&autoReconnect=true&useSSL=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  #整合mybatis
+  #配置mybatis
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql

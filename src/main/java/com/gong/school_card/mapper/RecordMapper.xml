@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gong.school_card.mapper.RecordMapper">
+
+    <!--    select s.name,r.balance,r.create_time,r.studentid from student s,record r where s.studentid = r.studentid-->
+    <!-- 多表查询-->
+    <select id="selectLists" resultType="com.gong.school_card.pojo.vo.RecordAndStudent">
+        select s.name, r.balance, r.create_time, r.studentid, r.id
+        from student s,
+             record r
+        where s.studentid = r.studentid </select>
+
+</mapper>

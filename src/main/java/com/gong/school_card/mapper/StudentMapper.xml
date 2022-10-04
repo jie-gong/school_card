@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gong.school_card.mapper.StudentMapper">
+    <!-- 查询删除的用户  -->
+    <select id="selectDelete" resultType="com.gong.school_card.pojo.Student">
+        select *
+        from student
+        where deleted = #{deleted};
+    </select>
+    <update id="updateStudents" parameterType="int">
+        update student
+        set deleted = #{deleted}
+        where studentid = #{studentid};
+    </update>
+    <select id="selectListBalances" resultType="com.gong.school_card.pojo.vo.CardAndStudent">
+        select t.studentid,
+               t.name,
+               t.magor,
+               t.sex,
+               t.phone,
+               t.create_time,
+               t.update_time,
+               t.deleted = 0,
+               c.balance
+        from student t,
+             card c
+        where t.studentid = c.studentid;
+    </select>
+
+    <select id="getname" resultType="com.gong.school_card.pojo.Student">
+        select *
+        from student
+        where name = #{name};
+    </select>
+
+
+</mapper>
