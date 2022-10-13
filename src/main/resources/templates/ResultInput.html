@@ -159,7 +159,7 @@
                     <form th:action="@{/selecet/grade}" method="post" style="margin-left: 1050px;margin-top: -35px">
                         <div class="row">
                             <div>
-                                <input name="selectUser" type="text"
+                                <input name="name" type="text"
                                        placeholder="查找学生的姓名">
                             </div>
                             <div>
@@ -189,7 +189,7 @@
                             <!--                                <td th:text="${student.getId()}"></td>-->
                             <tr th:each="item:${pageInfo}">
                                 <!--                                <td th:text="${student.getId()}"></td>-->
-                                <td th:text="${item.getStudentid()}"></td>
+                                <td th:text="${item.getId()}"></td>
                                 <td th:text="${item.getName()}"></td>
                                 <td th:text="${item.getJava()}"></td>
                                 <td th:text="${item.getHtml()}"></td>

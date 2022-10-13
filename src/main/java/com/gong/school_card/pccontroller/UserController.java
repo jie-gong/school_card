@@ -79,10 +79,11 @@ public class UserController {
 
 
     @Resource
-    private RedisTemplate<String,Student> redisTemplate;
+    private RedisTemplate<String, Student> redisTemplate;
 
     @Resource
     private StudentServicesImpl studentServices;
+
     //回收站
     @RequestMapping("/RecycleBin")
     public String RecycleBin(Model model) {
@@ -109,8 +110,8 @@ public class UserController {
          * 回收站
          */
         List<Student> list = studentServices.selectDelete(1);
-        if (list.size()==0){
-            model.addAttribute("msg","当前没有删除记录");
+        if (list.size() == 0) {
+            model.addAttribute("msg", "当前没有删除记录");
             return "studentlist";
         }
         /**
@@ -274,5 +275,15 @@ public class UserController {
             resulMapper.insert(resul);
             return "redirect:/grade";
         }
+    }
+
+    //查找学生信息
+    @RequestMapping("/selecet/grade")
+    public String selecetgrade(String name, Model model) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("name", name);
+        List<Resul> resuls = resulMapper.selectByMap(map);
+        model.addAttribute("pageInfo", resuls);
+        return "ResultInput";
     }
 }

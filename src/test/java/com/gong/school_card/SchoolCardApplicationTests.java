@@ -210,4 +210,17 @@ class SchoolCardApplicationTests {
     }
 
 
+    @Test
+    //清除token缓存
+    public void clearToken(){
+        Boolean admin = redisTemplate.delete("admin");
+        System.out.println(admin);
+    }
+
+    //获取缓存
+    @Test
+    public void getTokenForRedis(){
+        Object admin = redisTemplate.opsForValue().get("admin");
+        System.out.println(admin);
+    }
 }

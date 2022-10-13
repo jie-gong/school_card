@@ -37,13 +37,8 @@ public class MyMvcConfig implements WebMvcConfigurer {
 //                不需要拦截的请求进行放行
                 .excludePathPatterns(//路径   静态资源
                         "/",
-                        "/static/**"
-//                        "classpath:/static/"
-//                        "/img/**",
-//                        "/css/**",
-//                        "/js/**"
-                )
-                .excludePathPatterns(//请求
+                        "/static/**",
+                        //请求
                         "/studentlogin/login",
                         "/user/login",
                         "/retrieve",
@@ -57,14 +52,16 @@ public class MyMvcConfig implements WebMvcConfigurer {
                         "/card/saveMoney",
                         "/card//update",
                         "/user/use",
-                        "/card/addStudent")
-                .excludePathPatterns(
+                        "/login/studentLogin",
+                        "/login/verify",
+                        "/card/addStudent",
                         "/commons/commons.html",
                         "/404.html",
                         "/index.html",
                         "/index02.html",
                         "/password.html",
                         "/studentlogin.html",
+                        "/clear/session",
                         "/userdashboard.html")
                 .excludePathPatterns("/index.html", "/", "/user/login", "/img/**", "/css/**", "/js/**");
 
@@ -76,10 +73,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(//路径   静态资源
                         "/",
                         "/static/**"
-//                        ,
-//                        "/img/**",
-//                        "/css/**",
-//                        "/js/**"
                 )
                 .excludePathPatterns(//请求
                         "/studentlogin/login",
@@ -95,8 +88,12 @@ public class MyMvcConfig implements WebMvcConfigurer {
                         "/card/saveMoney",
                         "/card//update",
                         "/user/use",
-                        "/card/addStudent")
+                        "/card/addStudent",
+                        "/select/grade",
+                        "/login/studentLogin",
+                        "/login/verify")
                 .excludePathPatterns(
+                        "/swagger-ui.html",
                         "/commons/commons.html",
                         "/404.html",
                         "/index.html",
@@ -106,19 +103,9 @@ public class MyMvcConfig implements WebMvcConfigurer {
                         "/userdashboard.html")
                 .excludePathPatterns("/index.html", "/", "/user/login", "/img/**", "/css/**", "/js/**");
 
-        //拦截所有，手动放行部分
-        //静态资源不需要处理，可以正常访问。springboot已经做好了静态资源映射
-//                .excludePathPatterns("/","index","/index", "/index.html", "/**/*.css", "/**/*.js", "/**/*.png",
-//                        "/**/*.jpg","/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg","/**/*.ico","/**/*.map");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 
-    //    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/**")   //代表什么样的路径访问静态资源
-//                .addResourceLocations("classpath:/templates/");
-//    }
-//
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
             "classpath:/META-INF/resources/", "classpath:/resources/",
             "classpath:/static/", "classpath:/public/"};

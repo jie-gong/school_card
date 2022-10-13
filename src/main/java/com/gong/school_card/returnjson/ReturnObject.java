@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReturnObject {
     private Integer code = 200;
-    private String message = "学生不存在";
+    private String message ;
+//    private String token;
 
     public ReturnObject(Integer code, String message) {
         this.code = code;
         this.message = message;
+//        this.token = token;
     }
 }

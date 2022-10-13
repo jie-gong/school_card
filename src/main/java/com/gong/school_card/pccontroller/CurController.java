@@ -1,6 +1,11 @@
 package com.gong.school_card.pccontroller;
 
+import com.gong.school_card.TokenUtil.TokenProccessor;
+import com.gong.school_card.TokenUtil.TokenTools;
+import com.gong.school_card.pojo.Admin;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Set;
 
 /**
  * @author: 公杰
@@ -36,13 +42,36 @@ public class CurController {
         return "index02";
     }
 
-    //推出登录 清除session
-    @GetMapping("/clear/session")
-    public String ClearSession(HttpSession session) {
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+
+    //退出登录 清除Token
+    @GetMapping("/clear/Token")
+    public String ClearToken(HttpSession session, Admin admin) {
         //清除session
-        session.removeAttribute("loginUser");
+        session.removeAttribute("admin");
+        //清除token
+        Set keys = redisTemplate.keys("*");
+        if (ObjectUtils.isEmpty(keys)) {
+            redisTemplate.delete(keys);
+        }
         return "index";
     }
+
+    //推出登录 清除TOKEN
+    @GetMapping("/clear/session")
+    public String ClearSession(HttpSession session, Admin admin) {
+        //清除TOKEN
+        Set keys = redisTemplate.keys("*");
+        if (ObjectUtils.isEmpty(keys)) {
+            redisTemplate.delete(keys);
+        }
+        session.removeAttribute("admin");
+        return "index";
+    }
+
 
     //    //跳转学生管理界面
 //    @GetMapping("/touserlist")

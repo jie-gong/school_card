@@ -1,10 +1,10 @@
 package com.gong.school_card;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-//@MapperScan("com.gong.school_card.mapper")
+@EnableSwagger2//开启swaffer2
 @SpringBootApplication
 public class SchoolCardApplication {
 

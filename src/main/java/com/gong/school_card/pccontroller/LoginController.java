@@ -1,20 +1,27 @@
 package com.gong.school_card.pccontroller;
 
+import com.gong.school_card.TokenUtil.TokenProccessor;
+import com.gong.school_card.TokenUtil.TokenTools;
 import com.gong.school_card.mapper.AdminMapper;
 import com.gong.school_card.mapper.StudentMapper;
 import com.gong.school_card.mapper.UserMapper;
 import com.gong.school_card.pojo.Admin;
 import com.gong.school_card.pojo.User;
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import io.netty.util.internal.ObjectUtil;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 /**
@@ -32,6 +39,9 @@ public class LoginController {
     @Autowired
     private AdminMapper adminMapper;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @RequestMapping("/user/login")
     public ModelAndView AdminLogin(String admin,
                                    String adminpass,
@@ -42,14 +52,26 @@ public class LoginController {
         objectObjectHashMap.put("admin", admin);
         objectObjectHashMap.put("adminpass", adminpass);
         List<Admin> admins = adminMapper.selectByMap(objectObjectHashMap);
+        Object admin1 = redisTemplate.opsForValue().get(admin);
+        if (admin1 != null) {
+            session.setAttribute("admin", admin1);
+            modelAndView.setViewName("redirect:/user/user");
+        } else {
+            redisTemplate.delete(admin);
+        }
+
         if (admins.size() == 0) {
             model.addAttribute("msg", "用户名或密码错误");
             modelAndView.setViewName("index");
         } else {
-            session.setAttribute("loginUser", admin);
+            String s = TokenProccessor.makeToken(admin);
+            System.out.println("+++++++++++++++++++++++++++++" + s);
+            redisTemplate.opsForValue().set(admin, s);
+//            session.setAttribute("loginUser", s);
+            session.setAttribute("admin", s);
             model.addAttribute("username", admin);
             modelAndView.addObject("admin", admins);
-            modelAndView.setViewName("/dashboard.html");
+            modelAndView.setViewName("redirect:/user/user");
         }
 
         return modelAndView;
@@ -111,6 +133,35 @@ public class LoginController {
             modelAndView.addObject("admin", admins);
             modelAndView.setViewName("retrieve_password");
         }
+        return modelAndView;
+    }
+
+    @RequestMapping("/")
+    public ModelAndView LoginRedis(HttpSession session, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        /**
+         *
+         * 当前需要解决admin账户传输问题
+         */
+        Object admin = request.getSession().getAttribute("admin");
+        if (admin == null) {
+//            modelAndView.setViewName("redirect:/clear/session");
+            //删除所有key;
+            Set keys = redisTemplate.keys("*");
+            if (ObjectUtils.isEmpty(keys)) {
+                redisTemplate.delete(keys);
+            }
+        } else {
+            modelAndView.setViewName("redirect:/user/user");
+        }
+        //废弃的方法
+//        Object admin1 = redisTemplate.opsForValue().get(admin);
+//        if (admin1 == null) {
+//            session.setAttribute("admin", admin1);
+//            modelAndView.setViewName("redirect:/clear/session");
+//        } else {
+//            modelAndView.setViewName("redirect:/user/user");
+//        }
         return modelAndView;
     }
 

@@ -22,8 +22,11 @@ public class User {
     private Integer id;
     @TableId(value = "studentid", type = IdType.AUTO)
     private Integer studentid;
+    @TableField("username")
     private String username;
+    @TableField("password")
     private String password;
+    @TableField("kay")
     private String kay;
     @TableLogic//逻辑删除注解
     private Integer deleted;
