@@ -15,6 +15,7 @@ import com.gong.school_card.pojo.redisStudent;
 import com.gong.school_card.pojo.vo.RecordAndStudent;
 import com.gong.school_card.pojo.vo.UserAndStudent;
 import com.gong.school_card.services.impl.StudentServicesImpl;
+import org.apache.commons.lang3.ObjectUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,9 +24,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @SpringBootTest
 class SchoolCardApplicationTests {
@@ -212,15 +211,30 @@ class SchoolCardApplicationTests {
 
     @Test
     //清除token缓存
-    public void clearToken(){
+    public void clearToken() {
         Boolean admin = redisTemplate.delete("admin");
         System.out.println(admin);
     }
 
     //获取缓存
     @Test
-    public void getTokenForRedis(){
+    public void getTokenForRedis() {
         Object admin = redisTemplate.opsForValue().get("admin");
         System.out.println(admin);
+    }
+
+    @Test
+    public void clearRedis() {
+        Set keys = redisTemplate.keys("*");
+        keys.forEach(System.out::println);
+        //迭代
+        Iterator<String> iterator = keys.iterator();
+        //通过while删除
+        while (iterator.hasNext()) {
+            redisTemplate.delete(iterator.next());
+        }
+//        if (ObjectUtils.isEmpty(keys)) {
+//            redisTemplate.delete(keys);
+//        }
     }
 }

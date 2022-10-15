@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Set;
 
@@ -24,7 +25,11 @@ import java.util.Set;
  */
 @Controller
 public class CurController {
+    @Autowired
+    private ControllerUtil controllerUtil;
+
     //跳转学生登录界面
+
     @GetMapping("/student")
     public String goStudent() {
         return "studentlogin";
@@ -96,8 +101,14 @@ public class CurController {
 
     //跳转主页管理界面
     @GetMapping("/user/user")
-    public String CurUser() {
-        return "dashboard";
+    public String CurUser(HttpServletRequest request,Model model) {
+        Boolean aBoolean = controllerUtil.LoginUtil(request);
+        if (!aBoolean) {
+            model.addAttribute("msg", "账号异地登陆，请确认账号密码安全");
+            return "index";
+        } else {
+            return "dashboard";
+        }
     }
 
     //跳转注册学生界面

@@ -14,15 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /**
  * @author: 公杰
@@ -33,6 +31,7 @@ import java.util.WeakHashMap;
  */
 @RestController
 public class LoginController {
+    public static final String PASS_WARD = "123456";
     @Autowired
     private UserMapper userMapper;
 
@@ -42,6 +41,42 @@ public class LoginController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+
+    @PostMapping(value = "/login")
+    public String login(@RequestParam("userName") String userName,
+                        @RequestParam("password") String password,
+                        @RequestParam("verifyCode") String verifyCode,
+                        HttpSession session) {
+        if (StringUtils.isEmpty(verifyCode)) {
+            session.setAttribute("errorMsg", "验证码不能为空");
+            return "admin/login";
+        }
+        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
+            session.setAttribute("errorMsg", "用户名或密码不能为空");
+            return "admin/login";
+        }
+        String kaptchaCode = session.getAttribute("verifyCode") + "";
+        if (StringUtils.isEmpty(kaptchaCode) || !verifyCode.equals(kaptchaCode)) {
+            session.setAttribute("errorMsg", "验证码错误");
+            return "admin/login";
+        }
+//        Admin adminUser = adminMapper.login(userName, password);
+//        System.out.println(adminUser);
+//        if (adminUser != null) {
+//            session.setAttribute("loginUser", adminUser.getNickName());
+//            session.setAttribute("loginUserId", adminUser.getAdminUserId());
+//            //session过期时间设置为7200秒 即两小时
+//            //session.setMaxInactiveInterval(60 * 60 * 2);
+//            return "redirect:/admin/index";
+//        } else {
+//            session.setAttribute("errorMsg", "登陆失败");
+//            return "admin/login";
+//        }
+        return "redirect:/user/user";
+    }
+
+
+    //登录
     @RequestMapping("/user/login")
     public ModelAndView AdminLogin(String admin,
                                    String adminpass,
@@ -57,13 +92,22 @@ public class LoginController {
             session.setAttribute("admin", admin1);
             modelAndView.setViewName("redirect:/user/user");
         } else {
-            redisTemplate.delete(admin);
+            //获取所有key
+            Set keys = redisTemplate.keys("*");
+            Iterator<String> iterator = keys.iterator();
+            //通过while删除
+            while (iterator.hasNext()) {
+                redisTemplate.delete(iterator.next());
+            }
+//            redisTemplate.delete(admin);
+
         }
 
         if (admins.size() == 0) {
             model.addAttribute("msg", "用户名或密码错误");
             modelAndView.setViewName("index");
         } else {
+            session.setAttribute("userLogin", admin);
             String s = TokenProccessor.makeToken(admin);
             System.out.println("+++++++++++++++++++++++++++++" + s);
             redisTemplate.opsForValue().set(admin, s);
@@ -83,7 +127,7 @@ public class LoginController {
                                           String kay,
                                           Model model,
                                           HttpSession session) {
-        String password = "123456";
+//        String password = "123456";
         ModelAndView modelAndView = new ModelAndView();
         //验证账号与密保
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();
@@ -104,10 +148,10 @@ public class LoginController {
             //更新数据
             User user = new User();
             user.setUsername(username);
-            user.setPassword("123456");
+            user.setPassword(PASS_WARD);
             userMapper.user(user);
-            System.out.println(username + password);
-            model.addAttribute("msg", "验证成功将密码重置为123456");
+            System.out.println(username + PASS_WARD);
+            model.addAttribute("msg", "验证成功将密码重置为" + PASS_WARD);
             modelAndView.setViewName("index");
             session.removeAttribute("loginUser");
         }
@@ -141,16 +185,22 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         /**
          *
-         * 当前需要解决admin账户传输问题
+         * 当前需要解决admin账户传输问题    √
          */
         Object admin = request.getSession().getAttribute("admin");
         if (admin == null) {
-//            modelAndView.setViewName("redirect:/clear/session");
-            //删除所有key;
+            System.out.println("删除所有key");
+            /*
+            删除所有key;
+             */
+            //获取所有key
             Set keys = redisTemplate.keys("*");
-            if (ObjectUtils.isEmpty(keys)) {
-                redisTemplate.delete(keys);
+            Iterator<String> iterator = keys.iterator();
+            //通过while删除
+            while (iterator.hasNext()) {
+                redisTemplate.delete(iterator.next());
             }
+            modelAndView.setViewName("index");
         } else {
             modelAndView.setViewName("redirect:/user/user");
         }

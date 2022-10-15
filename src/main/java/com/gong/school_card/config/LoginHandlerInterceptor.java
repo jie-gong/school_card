@@ -19,10 +19,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 public class LoginHandlerInterceptor implements HandlerInterceptor {
-
-    @Resource
-    private RedisTemplate redisTemplate;
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Object admin = request.getSession().getAttribute("admin");

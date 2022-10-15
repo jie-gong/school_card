@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -40,12 +41,25 @@ public class UserController {
 //        model.addAttribute("list", students);
 //        return "userlist";
 //    }
+    @Autowired
+    private ControllerUtil controllerUtil;
+
     @GetMapping("/userlist")
-    public String AllS(Model model, @RequestParam(defaultValue = "1", value = "pageNum") long pageNum) {
-        Page<Student> page = new Page(pageNum, 10);
-        studentMapper.selectPage(page, null);
-        model.addAttribute("pageInfo", page);
-        return "userlist";
+    public String AllS(Model model, @RequestParam(defaultValue = "1", value = "pageNum") long pageNum, HttpServletRequest request) {
+//        Object admin = request.getSession().getAttribute("admin");
+//        Object userLogin = request.getSession().getAttribute("userLogin");
+//        Object o = redisTemplate.opsForValue().get(userLogin);
+//        Boolean aBoolean = controllerUtil.GoOut(admin, o);
+        Boolean aBoolean = controllerUtil.LoginUtil(request);
+        if (aBoolean == false) {
+            model.addAttribute("msg", "账号异地登陆，请确认账号密码安全");
+            return "index";
+        } else {
+            Page<Student> page = new Page(pageNum, 10);
+            studentMapper.selectPage(page, null);
+            model.addAttribute("pageInfo", page);
+            return "userlist";
+        }
     }
 
     //跳转修改学生数据
