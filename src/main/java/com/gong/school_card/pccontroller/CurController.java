@@ -67,7 +67,7 @@ public class CurController {
 
     //推出登录 清除TOKEN
     @GetMapping("/clear/session")
-    public String ClearSession(HttpSession session, Admin admin) {
+    public String ClearSession(HttpSession session) {
         //清除TOKEN
         Set keys = redisTemplate.keys("*");
         if (ObjectUtils.isEmpty(keys)) {

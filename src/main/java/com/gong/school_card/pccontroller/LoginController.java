@@ -91,17 +91,18 @@ public class LoginController {
         if (admin1 != null) {
             session.setAttribute("admin", admin1);
             modelAndView.setViewName("redirect:/user/user");
-        } else {
-            //获取所有key
-            Set keys = redisTemplate.keys("*");
-            Iterator<String> iterator = keys.iterator();
-            //通过while删除
-            while (iterator.hasNext()) {
-                redisTemplate.delete(iterator.next());
-            }
-//            redisTemplate.delete(admin);
-
         }
+//        else {
+//            //获取所有key
+//            Set keys = redisTemplate.keys("*");
+//            Iterator<String> iterator = keys.iterator();
+//            //通过while删除
+//            while (iterator.hasNext()) {
+//                redisTemplate.delete(iterator.next());
+//            }
+////            redisTemplate.delete(admin);
+//
+//        }
 
         if (admins.size() == 0) {
             model.addAttribute("msg", "用户名或密码错误");
@@ -109,7 +110,6 @@ public class LoginController {
         } else {
             session.setAttribute("userLogin", admin);
             String s = TokenProccessor.makeToken(admin);
-            System.out.println("+++++++++++++++++++++++++++++" + s);
             redisTemplate.opsForValue().set(admin, s);
 //            session.setAttribute("loginUser", s);
             session.setAttribute("admin", s);
