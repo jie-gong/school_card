@@ -20,6 +20,11 @@ import java.util.List;
 @Repository
 public interface RecordMapper extends BaseMapper<Record> {
     //多表查询 查询学生充值记录
-    //List<Record> selectList();
     List<RecordAndStudent> selectLists();
+    //通过姓名搜索充值记录
+    List<RecordAndStudent> selectByName(String name);
+    //时间升序
+    List<RecordAndStudent>TimeAscending();
+    //时间升序
+    List<RecordAndStudent>NameAscending();
 }

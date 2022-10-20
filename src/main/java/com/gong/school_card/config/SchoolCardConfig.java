@@ -20,26 +20,28 @@ public class SchoolCardConfig {
 
     //注册乐观锁插件
     @Bean
-    public OptimisticLockerInterceptor optimisticLockerInterceptor(){
+    public OptimisticLockerInterceptor optimisticLockerInterceptor() {
         return new OptimisticLockerInterceptor();
     }
 
     //分页插件
     //导入配置插件
     @Bean
-    public PaginationInterceptor paginationInterceptor(){
+    public PaginationInterceptor paginationInterceptor() {
         return new PaginationInterceptor();
     }
+
     //逻辑删除
     @Bean
-    public ISqlInjector sqlInjector(){
+    public ISqlInjector sqlInjector() {
         return new LogicSqlInjector();
     }
+
     //性能测试插件
     //sql执行效率插件
     @Bean
-    @Profile({"dev","test"})
-    public PerformanceInterceptor performanceInterceptor(){
+    @Profile({"dev", "test"})
+    public PerformanceInterceptor performanceInterceptor() {
         PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
         //在工作中不允许等待
         performanceInterceptor.setMaxTime(1000);//设置sql执行的最大时间，如果超过了 就不执行

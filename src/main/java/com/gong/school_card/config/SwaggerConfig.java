@@ -1,5 +1,6 @@
 package com.gong.school_card.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -17,20 +18,16 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @Date: 2022年10月05日 11:21
  * @Description:
  */
-//@Configuration
-//@EnableSwagger2//开启Swagger2
+@Configuration
+@EnableSwagger2//开启Swagger2
 public class SwaggerConfig {
-
-//    @Value(value = "ture")
-//    private Boolean swaggerEnabled;
 
     @Bean
     public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
-//                .enable(swaggerEnabled)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.gong.school_card"))
+                .apis(RequestHandlerSelectors.basePackage("com.gong.redis_note"))
                 .paths(PathSelectors.any())
                 .build();
     }

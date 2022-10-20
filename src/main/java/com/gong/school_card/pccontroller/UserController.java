@@ -160,23 +160,6 @@ public class UserController {
     @Autowired
     private RecordMapper recordMapper;
 
-    /**
-     * 查询学生充值记录
-     */
-    @GetMapping("/recharge/record")
-    public String recharge(Model model) {
-        List<RecordAndStudent> recordAndStudents = recordMapper.selectLists();
-        model.addAttribute("list", recordAndStudents);
-        return "recharge_record";
-    }
-
-    //显示学生单独的充值记录
-    @GetMapping("/showbalance/{studentid}")
-    public String ShowBalance(@PathVariable("studentid") int id, Model model) {
-        List<CardAndStudent> cardAndStudents = cardMapper.selectBalance(id);
-        model.addAttribute("pageInfo", cardAndStudents);
-        return "Showbalance";
-    }
 
     //注册学生
     @PostMapping("/addStudent")

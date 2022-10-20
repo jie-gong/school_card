@@ -10,6 +10,36 @@
         select s.name, r.balance, r.create_time, r.studentid, r.id
         from student s,
              record r
-        where s.studentid = r.studentid </select>
+        where s.studentid = r.studentid;</select>
+
+
+
+    <!-- 多表查询-->
+    <select id="selectByName" resultType="com.gong.school_card.pojo.vo.RecordAndStudent">
+        select s.name, r.balance, r.create_time, r.studentid, r.id
+        from student s,
+             record r
+        where s.studentid = r.studentid
+          and s.name = #{name};
+    </select>
+
+
+    <!-- 通过时间排序-->
+    <select id="TimeAscending" resultType="com.gong.school_card.pojo.vo.RecordAndStudent">
+        select s.name, r.balance, r.create_time, r.studentid, r.id
+        from student s,
+             record r
+        where s.studentid = r.studentid
+        order by r.create_time desc
+    </select>
+
+    <!-- 通过姓名排序-->
+    <select id="NameAscending" resultType="com.gong.school_card.pojo.vo.RecordAndStudent">
+        select s.name, r.balance, r.create_time, r.studentid, r.id
+        from student s,
+             record r
+        where s.studentid = r.studentid
+        order by s.name desc
+    </select>
 
 </mapper>

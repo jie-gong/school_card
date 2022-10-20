@@ -23,7 +23,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/404.html").setViewName("404");
         registry.addViewController("/studentlogin.html").setViewName("studentlogin");
         registry.addViewController("/main.html").setViewName("dashboard");
-        registry.addViewController("/commons/commons.html").setViewName("commons");
+        registry.addViewController("/swagger-ui.html").setViewName("swagger-ui");
     }
 
     /**
@@ -123,4 +123,5 @@ public class MyMvcConfig implements WebMvcConfigurer {
         }
 
     }
+
 }
