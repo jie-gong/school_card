@@ -6,13 +6,21 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ReturnObject {
+
     private Integer code = 200;
-    private String message ;
-//    private String token;
+    private Integer total;
+    private String message = "";
+    private Object data;
+
+    public ReturnObject(Integer code, String message, Integer total, Object result) {
+        this.code = code;
+        this.message = message;
+        this.total = total;
+        this.data = result;
+    }
 
     public ReturnObject(Integer code, String message) {
         this.code = code;
         this.message = message;
-//        this.token = token;
     }
 }

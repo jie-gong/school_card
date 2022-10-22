@@ -81,41 +81,41 @@ public class LoginController {
     public ModelAndView AdminLogin(String admin,
                                    String adminpass,
                                    Model model,
-                                   HttpSession session) {
+                                   HttpSession session,
+                                   HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
         HashMap<String, Object> objectObjectHashMap = new HashMap<>();
         objectObjectHashMap.put("admin", admin);
         objectObjectHashMap.put("adminpass", adminpass);
         List<Admin> admins = adminMapper.selectByMap(objectObjectHashMap);
-        Object admin1 = redisTemplate.opsForValue().get(admin);
-        if (admin1 != null) {
-            session.setAttribute("admin", admin1);
-            modelAndView.setViewName("redirect:/user/user");
-        }
-//        else {
-//            //获取所有key
-//            Set keys = redisTemplate.keys("*");
-//            Iterator<String> iterator = keys.iterator();
-//            //通过while删除
-//            while (iterator.hasNext()) {
-//                redisTemplate.delete(iterator.next());
-//            }
-////            redisTemplate.delete(admin);
-//
-//        }
 
-        if (admins.size() == 0) {
-            model.addAttribute("msg", "用户名或密码错误");
+        //获取缓存内数据
+        Object admin1 = redisTemplate.opsForValue().get(admin);
+        Object attribute = request.getSession().getAttribute("userLogin");
+        System.out.println("啦啦啦啦啦啦啦 聊了了聊了了了聊了了了了" + admin1+attribute);
+        /**
+         * 判断Redis中的token是不是空
+         * @notNull 返回登录界面 无法正常登录
+         * @Null 正常登录 正常放行
+         */
+        if (admin1 != null && request.getSession().getAttribute("userLogin") == null) {
+            session.setAttribute("admin", admin1);
+            model.addAttribute("msg", "账号未下线，无法登录");
             modelAndView.setViewName("index");
         } else {
-            session.setAttribute("userLogin", admin);
-            String s = TokenProccessor.makeToken(admin);
-            redisTemplate.opsForValue().set(admin, s);
-//            session.setAttribute("loginUser", s);
-            session.setAttribute("admin", s);
-            model.addAttribute("username", admin);
-            modelAndView.addObject("admin", admins);
-            modelAndView.setViewName("redirect:/user/user");
+            if (admins.size() == 0) {
+                model.addAttribute("msg", "用户名或密码错误");
+                modelAndView.setViewName("index");
+            } else {
+                session.setAttribute("userLogin", admin);
+                session.setMaxInactiveInterval(-1);
+                String s = TokenProccessor.makeToken(admin);
+                redisTemplate.opsForValue().set(admin, s);
+                session.setAttribute("admin", s);
+                model.addAttribute("username", admin);
+                modelAndView.addObject("admin", admins);
+                modelAndView.setViewName("redirect:/user/user");
+            }
         }
 
         return modelAndView;
@@ -124,7 +124,6 @@ public class LoginController {
     //找回密码
     @RequestMapping("/retrieve/password")
     public ModelAndView Retrieve_Password(String username,
-                                          String kay,
                                           Model model,
                                           HttpSession session) {
 //        String password = "123456";

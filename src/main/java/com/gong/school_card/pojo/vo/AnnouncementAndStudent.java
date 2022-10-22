@@ -1,6 +1,7 @@
-package com.gong.school_card.pojo;
+package com.gong.school_card.pojo.vo;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,22 +12,22 @@ import java.util.Date;
 /**
  * @author: 公杰
  * @Project: JavaLaity
- * @Pcakage: com.gong.school_card.pojo.Announcement
- * @Date: 2022年09月19日 09:07
+ * @Pcakage: com.gong.school_card.pojo.vo.AnnouncementAndStudent
+ * @Date: 2022年10月21日 09:26
  * @Description:
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Announcement {
-    @TableId(value = "id", type = IdType.AUTO)
-    private int id;
-    private String gz;
-    @TableLogic//逻辑删除注解
-    private Integer deleted;
+public class AnnouncementAndStudent {
+
+    private int studentid;//共有
+    private String name;
+
     //字段填充内容
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
-    private Integer studentid;
+    private String gz;
+    private int deleted;
 }

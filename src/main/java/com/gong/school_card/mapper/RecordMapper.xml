@@ -39,7 +39,7 @@
         from student s,
              record r
         where s.studentid = r.studentid
-        order by s.name desc
+        order by s.name desc;
     </select>
 
 </mapper>

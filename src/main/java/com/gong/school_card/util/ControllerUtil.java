@@ -1,6 +1,5 @@
-package com.gong.school_card.pccontroller;
+package com.gong.school_card.util;
 
-import com.gong.school_card.pojo.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author: 公杰
  * @Project: JavaLaity
- * @Pcakage: com.gong.school_card.pccontroller.ControllerUtil
+ * @Pcakage: com.gong.school_card.util.ControllerUtil
  * @Date: 2022年10月15日 13:01
  * @Description:
  */

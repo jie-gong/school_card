@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>消息推送</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/signin.css}" rel="stylesheet">
+</head>
+
+<body class="text-center">
+<form th:action="@{/getTipToStudent}" method="post">
+    <!--      style="min-width: 80%;min-height: 100%">-->
+
+
+    <p style="color: #0077ff" th:text="${msg02}" class="form-control">
+    <div class="input-group input-group-lg">
+        <div class="input-group-prepend">
+            <span class="input-group-text"
+                  id="inputGroup-sizing-lg">消息</span>
+        </div>
+        <input type="hidden" name="studentid"
+               th:value="${item}">
+        <input type="text" class="form-control"
+               style="min-height: 100px" name="gz" aria-label="Large"
+               aria-describedby="inputGroup-sizing-sm">
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-sm btn-primary btn-block"
+                style="margin-top: 50px;margin-left: 500px" type="submit">发送消息
+        </button>
+    </div>
+</form>
+
+</body>
+
+</html>

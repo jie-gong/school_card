@@ -3,15 +3,16 @@ package com.gong.school_card;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gong.school_card.mapper.CardMapper;
-import com.gong.school_card.mapper.RecordMapper;
-import com.gong.school_card.mapper.StudentMapper;
-import com.gong.school_card.mapper.UserMapper;
+import com.gong.school_card.mapper.*;
+import com.gong.school_card.pojo.Announcement;
 import com.gong.school_card.pojo.Card;
 import com.gong.school_card.pojo.Student;
 import com.gong.school_card.pojo.redisStudent;
+import com.gong.school_card.pojo.vo.AnnouncementAndStudent;
 import com.gong.school_card.pojo.vo.RecordAndStudent;
 import com.gong.school_card.pojo.vo.UserAndStudent;
 import com.gong.school_card.services.impl.StudentServicesImpl;
@@ -237,4 +238,25 @@ class SchoolCardApplicationTests {
 //            redisTemplate.delete(keys);
 //        }
     }
+
+    @Autowired
+    AnnouncementMapper announcementMapper;
+
+    @Test
+    public void AllGG() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("studentid", null);
+        List<Announcement> announcements = announcementMapper.selectByMap(map);
+        for (Announcement announcement : announcements) {
+            System.out.println("111111" + announcement);
+        }
+    }
+
+    //分页查询测试
+//    @Test
+//    public void PagerTest() {
+//        IPage<AnnouncementAndStudent> stringIPage = announcementMapper.listNewsDesc(new Page<>(0, 10));
+//        List<AnnouncementAndStudent> records = stringIPage.getRecords();
+//        records.forEach(System.out::println);
+//    }
 }

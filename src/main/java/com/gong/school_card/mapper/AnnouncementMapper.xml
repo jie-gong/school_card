@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gong.school_card.mapper.AnnouncementMapper">
+
+    <!-- 查找一名学生 -->
+    <select id="SelectStudentName" resultType="com.gong.school_card.pojo.Student">
+        select name, studentid
+        from student
+        where studentid = #{studentid};
+
+    </select>
+
+
+    <!-- 分页降序查询数据 -->
+
+    <select id="listNewsDesc" resultType="com.gong.school_card.pojo.vo.AnnouncementAndStudent">
+        select a.create_time, a.gz, a.studentid, s.name
+        from announcement a,
+             student s
+        where a.studentid = s.studentid
+          and a.studentid = #{studentid}
+          and a.deleted = 0
+        order by a.create_time desc
+    </select>
+
+
+    <!-- 分页升序查询数据 -->
+    <select id="listNewsEsc" resultType="com.gong.school_card.pojo.vo.AnnouncementAndStudent">
+        select a.create_time, a.gz, a.studentid, s.name
+        from announcement a,
+             student s
+        where a.studentid = s.studentid
+          and a.studentid = #{studentid}
+          and a.deleted = 0
+        order by a.create_time
+    </select>
+</mapper>

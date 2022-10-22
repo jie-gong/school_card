@@ -4,10 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gong.school_card.mapper.*;
 import com.gong.school_card.pojo.*;
-import com.gong.school_card.pojo.vo.CardAndStudent;
-import com.gong.school_card.pojo.vo.RecordAndStudent;
 import com.gong.school_card.pojo.vo.ResulAndStudent;
 import com.gong.school_card.services.impl.StudentServicesImpl;
+import com.gong.school_card.util.ControllerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -46,10 +45,6 @@ public class UserController {
 
     @GetMapping("/userlist")
     public String AllS(Model model, @RequestParam(defaultValue = "1", value = "pageNum") long pageNum, HttpServletRequest request) {
-//        Object admin = request.getSession().getAttribute("admin");
-//        Object userLogin = request.getSession().getAttribute("userLogin");
-//        Object o = redisTemplate.opsForValue().get(userLogin);
-//        Boolean aBoolean = controllerUtil.GoOut(admin, o);
         Boolean aBoolean = controllerUtil.LoginUtil(request);
         if (aBoolean == false) {
             model.addAttribute("msg", "账号异地登陆，请确认账号密码安全");
@@ -68,6 +63,7 @@ public class UserController {
         QueryWrapper<Student> studentQueryWrapper = new QueryWrapper<>();
         studentQueryWrapper.eq("studentid", studentid);
         Student student = studentMapper.selectOne(studentQueryWrapper);
+        System.out.println(student);
         model.addAttribute("item", student);
         return "/emp/update";
     }
@@ -206,16 +202,12 @@ public class UserController {
 
     //显示公告记录
     @RequestMapping("/select/GG")
-    public String selectGG(Model model, @RequestParam(defaultValue = "1", value = "pageNum") long pageNum) {
+    public String selectGG(Model model,
+                           @RequestParam(defaultValue = "1", value = "pageNum") long pageNum) {
         Page<Announcement> page = new Page(pageNum, 10);
         announcementMapper.selectPage(page, null);
         model.addAttribute("pageInfo", page);
         return "/GG/histor";
-//
-//        List<Announcement> announcements = announcementMapper.selectList(null);
-//        model.addAttribute("msg", announcements);
-//        announcements.forEach(System.out::println);
-//        return "/GG/histor";
     }
 
     //删除公告

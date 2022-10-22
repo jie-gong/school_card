@@ -1,15 +1,11 @@
 package com.gong.school_card.phonecontroller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gong.school_card.mapper.CardMapper;
-import com.gong.school_card.mapper.RecordMapper;
-import com.gong.school_card.mapper.StudentMapper;
-import com.gong.school_card.mapper.UserMapper;
-import com.gong.school_card.pojo.Card;
-import com.gong.school_card.pojo.Record;
-import com.gong.school_card.pojo.Student;
-import com.gong.school_card.pojo.User;
+import com.gong.school_card.mapper.*;
+import com.gong.school_card.pojo.*;
 import com.gong.school_card.returnjson.ReturnObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +39,9 @@ public class PhoneController {
     @Autowired
     private RecordMapper recordMapper;
 
+    @Autowired
+    private AnnouncementMapper announcementMapper;
+
     @PostMapping("/balance")//查询余额
     @ResponseBody
     public Object getY(@RequestBody JSONObject jsonObject) {
@@ -54,7 +53,7 @@ public class PhoneController {
         if (cards == null) {
             return JSONObject.toJSON(new ReturnObject(400, "查询失败"));
         } else {
-            return JSONObject.toJSON(cards);
+            return JSONObject.toJSON(new ReturnObject(200, "查询成功", cards.size(), cards));
         }
     }
 
@@ -70,7 +69,7 @@ public class PhoneController {
         if (student == null) {
             return JSONObject.toJSON(new ReturnObject(400, "查询失败"));
         } else {
-            return JSONObject.toJSON(student);
+            return JSONObject.toJSON(new ReturnObject(200, "查询成功", 1, student));
         }
     }
 
@@ -168,7 +167,42 @@ public class PhoneController {
         student.setPhone(phone);
         student.setSex(sex);
         student.setName(name);
-        studentMapper.updateById(student);
-        return null;
+        int i = studentMapper.updateById(student);
+        if (i != 1) {
+            return JSONObject.toJSON(new ReturnObject(500, "修改失败"));
+        } else {
+            return JSONObject.toJSON(new ReturnObject(200, "修改成功"));
+        }
+    }
+
+
+    //查询全部公告
+    @GetMapping("/allgg")
+    @ResponseBody
+    public Object getAllGG() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("studentid", null);
+        List<Announcement> announcements = announcementMapper.selectByMap(map);
+        if (announcements.size() == 0) {
+            return JSONObject.toJSON(new ReturnObject(500, "查询结果为空"));
+        } else {
+            return JSONObject.toJSON(new ReturnObject(200, "查询成功", announcements.size(), announcements));
+        }
+    }
+
+    //通过用户id查询个人公告
+    //或者通过null字符串查询全部非个人公告
+    @GetMapping("/getNews")
+    @ResponseBody
+    public Object getNews(@RequestBody Announcement announcement) {
+        Integer studentid = announcement.getStudentid();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("studentid", studentid);
+        List<Announcement> announcement1 = announcementMapper.selectByMap(map);
+        if (announcement1.size() != 0) {
+            return JSONObject.toJSON(new ReturnObject(200, "查询成功", announcement1.size(), announcement1));
+        } else {
+            return JSONObject.toJSON(new ReturnObject(500, "用户当前没有消息", 1, null));
+        }
     }
 }

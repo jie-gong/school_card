@@ -44,7 +44,14 @@
 </head>
 
 <body>
-<div th:insert="~{commons/commons::head}"></div>
+<nav class="navbar navbar-dark sticky-top bg-success flex-md-nowrap p-0" th:fragment="head">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">欢迎</a>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" th:href="@{/clear/session}">退出登录</a>
+        </li>
+    </ul>
+</nav>
 <div class="container-fluid">
     <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -185,11 +192,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!--/*@thymesVar id="list" type="templates"*/-->
-                            <!--                            <tr th:each="item:${pageInfo.records}">-->
-                            <!--                                <td th:text="${student.getId()}"></td>-->
                             <tr th:each="item:${pageInfo.records}">
-                                <!--                                <td th:text="${student.getId()}"></td>-->
                                 <td th:text="${item.getStudentid()}"></td>
                                 <td th:text="${item.getName()}"></td>
                                 <td th:text="${item.getSex()==0?'女':'男'}"></td>
@@ -199,12 +202,16 @@
                                 <td th:text="${item.getCreateTime}"></td>
                                 <td th:text="${item.getUpdateTime}"></td>
                                 <td>
+                                    <a class="btn btn-sm btn-dark"
+                                       th:href="@{/showNews/}+${item.getStudentid()}">查看消息</a>
                                     <a class="btn btn-sm btn-primary"
                                        th:href="@{/updatee/}+${item.getStudentid()}">编辑</a>
                                     <a class="btn btn-sm btn-danger"
                                        th:href="@{/deleteStudent/}+${item.getStudentid()}" onclick="dd()">删除</a>
                                     <a class="btn btn-sm btn-secondary"
                                        th:href="@{/showbalance/}+${item.getStudentid()}">查看余额</a>
+                                    <a class="btn btn-sm btn-warning"
+                                       th:href="@{/ToStudent/}+${item.getStudentid()}">发送通知</a>
                                 </td>
                             </tr>
                             </tbody>
