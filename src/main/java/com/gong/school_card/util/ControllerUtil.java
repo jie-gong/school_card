@@ -24,13 +24,14 @@ public class ControllerUtil {
     }
 
     //异地登陆判断工具类
-    public  Boolean LoginUtil(HttpServletRequest request) {
+    public Boolean LoginUtil(HttpServletRequest request) {
         Object admin = request.getSession().getAttribute("admin");
         Object userLogin = request.getSession().getAttribute("userLogin");
         Object o = redisTemplate.opsForValue().get(userLogin);
         Boolean aBoolean = ControllerUtil.GoOut(admin, o);
         return aBoolean;
     }
+
 
     //获取账号数据信息
     public void UserUtil(HttpServletRequest request) {

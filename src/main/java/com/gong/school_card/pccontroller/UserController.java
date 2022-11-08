@@ -237,11 +237,7 @@ public class UserController {
         return "ResultUpdate";
     }
 
-    //跳转添加学生界面
-    @GetMapping("/user/getGrade")
-    public String userGetGrade() {
-        return "ResultInster";
-    }
+
 
     //提交学生成绩修改的数据
     @PostMapping("/Result/Update")
@@ -266,12 +262,12 @@ public class UserController {
         }
     }
 
-    //查找学生信息
+    //显示全部学生成绩
     @RequestMapping("/selecet/grade")
     public String selecetgrade(String name, Model model) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("name", name);
-        List<Resul> resuls = resulMapper.selectByMap(map);
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("name", name);
+        List<ResulAndStudent> resuls = resulMapper.selectByName(name);
         model.addAttribute("pageInfo", resuls);
         return "ResultInput";
     }

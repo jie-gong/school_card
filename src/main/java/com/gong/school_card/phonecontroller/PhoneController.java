@@ -98,9 +98,9 @@ public class PhoneController {
             card.setStudentid(studentid1);
             card.setBalance("0");
             cardMapper.insert(card);
-            return JSONObject.toJSON(new ReturnObject(200, "添加成功"));
+            return JSONObject.toJSON(new ReturnObject(200, "注册成功"));
         } else {
-            return JSONObject.toJSON(new ReturnObject(400, "添加失败"));
+            return JSONObject.toJSON(new ReturnObject(400, "注册失败"));
         }
     }
 
@@ -153,7 +153,7 @@ public class PhoneController {
         } else {
             recordMapper.insert(record);
         }
-        return JSONObject.toJSON(new ReturnObject(200, "添加成功"));
+        return JSONObject.toJSON(new ReturnObject(200, "充值成功"));
     }
 
     //修改学生信息

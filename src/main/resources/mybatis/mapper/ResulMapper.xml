@@ -4,7 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gong.school_card.mapper.ResulMapper">
     <select id="selectResultInput" resultType="com.gong.school_card.pojo.vo.ResulAndStudent">
+        select r.id,
+               r.name,
+               r.java,
+               r.html,
+               r.spring,
+               r.mybatis,
+               r.mysql,
+               r.bootstrap,
+               s.studentid
+        from resul r,
+             student s
+        where r.name = s.name;
+    </select>
 
+    <select id="selectByName" resultType="com.gong.school_card.pojo.vo.ResulAndStudent">
         select r.id,
                r.name,
                r.java,

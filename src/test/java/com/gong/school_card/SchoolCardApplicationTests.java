@@ -252,11 +252,9 @@ class SchoolCardApplicationTests {
         }
     }
 
-    //分页查询测试
-//    @Test
-//    public void PagerTest() {
-//        IPage<AnnouncementAndStudent> stringIPage = announcementMapper.listNewsDesc(new Page<>(0, 10));
-//        List<AnnouncementAndStudent> records = stringIPage.getRecords();
-//        records.forEach(System.out::println);
-//    }
+    @Test
+    public void PagerTest() {
+        Student student = announcementMapper.SelectStudentName(1);
+        System.out.println(student);
+    }
 }

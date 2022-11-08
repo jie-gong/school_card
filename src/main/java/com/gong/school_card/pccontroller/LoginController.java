@@ -21,16 +21,18 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: 公杰
  * @Project: JavaLaity
  * @Pcakage: com.gong.school_card.pccontroller.LoginController
  * @Date: 2022年09月13日 10:01
- * @Description:
+ * @Description:      登录验证
  */
 @RestController
 public class LoginController {
+    public static Integer SessionMaxInactiveInterval=30*60;
     public static final String PASS_WARD = "123456";
     @Autowired
     private UserMapper userMapper;
@@ -92,7 +94,7 @@ public class LoginController {
         //获取缓存内数据
         Object admin1 = redisTemplate.opsForValue().get(admin);
         Object attribute = request.getSession().getAttribute("userLogin");
-        System.out.println("啦啦啦啦啦啦啦 聊了了聊了了了聊了了了了" + admin1+attribute);
+        System.out.println("聊了了聊了了了聊了了了了" + admin1 + attribute);
         /**
          * 判断Redis中的token是不是空
          * @notNull 返回登录界面 无法正常登录
@@ -108,10 +110,12 @@ public class LoginController {
                 modelAndView.setViewName("index");
             } else {
                 session.setAttribute("userLogin", admin);
-                session.setMaxInactiveInterval(-1);
+//                session.setMaxInactiveInterval(-1);
                 String s = TokenProccessor.makeToken(admin);
-                redisTemplate.opsForValue().set(admin, s);
+                long l = TimeUnit.MILLISECONDS.toMillis(30);
+                redisTemplate.opsForValue().set(admin, s,l);
                 session.setAttribute("admin", s);
+                session.setMaxInactiveInterval(SessionMaxInactiveInterval);
                 model.addAttribute("username", admin);
                 modelAndView.addObject("admin", admins);
                 modelAndView.setViewName("redirect:/user/user");
@@ -180,25 +184,25 @@ public class LoginController {
     }
 
     @RequestMapping("/")
-    public ModelAndView LoginRedis(HttpSession session, HttpServletRequest request) {
+    public ModelAndView LoginRedis(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
         /**
          *
          * 当前需要解决admin账户传输问题    √
          */
         Object admin = request.getSession().getAttribute("admin");
-        if (admin == null) {
+        if (admin == null & request.getSession().getAttribute("userLogin") == null) {
             System.out.println("删除所有key");
             /*
             删除所有key;
              */
             //获取所有key
-            Set keys = redisTemplate.keys("*");
-            Iterator<String> iterator = keys.iterator();
-            //通过while删除
-            while (iterator.hasNext()) {
-                redisTemplate.delete(iterator.next());
-            }
+//            Set keys = redisTemplate.keys("*");
+//            Iterator<String> iterator = keys.iterator();
+//            //通过while删除
+//            while (iterator.hasNext()) {
+//                redisTemplate.delete(iterator.next());
+//            }
             modelAndView.setViewName("index");
         } else {
             modelAndView.setViewName("redirect:/user/user");

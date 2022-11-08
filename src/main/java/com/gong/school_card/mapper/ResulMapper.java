@@ -19,4 +19,7 @@ import java.util.List;
 @Repository//持久化框架
 public interface ResulMapper extends BaseMapper<Resul> {
     List<ResulAndStudent>selectResultInput();
+    List<ResulAndStudent>selectByName(String name);
+
+
 }

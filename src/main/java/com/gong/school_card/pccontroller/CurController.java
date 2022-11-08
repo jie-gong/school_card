@@ -53,9 +53,13 @@ public class CurController {
     public String ClearSession(HttpSession session, HttpServletRequest request) {
         //清除缓存TOKEN
         Object admin = request.getSession().getAttribute("userLogin");
-        Boolean delete = redisTemplate.delete(admin);
-        System.out.println("+++++++++++--------=========="+delete);
-        session.removeAttribute("admin");
+//        session.removeAttribute("userLogin");
+        if (admin == null) {
+            return "index";
+        } else {
+            Boolean delete = redisTemplate.delete(admin);
+            System.out.println("+++++++++++--------==========" + delete);
+        }
         return "index";
     }
 
@@ -68,15 +72,15 @@ public class CurController {
     }
 
     //跳转主页管理界面
-//    @GetMapping("/user/user")
+    @GetMapping("/user/user")
     public String CurUser(HttpServletRequest request, Model model) {
-        Boolean aBoolean = controllerUtil.LoginUtil(request);
-        if (!aBoolean) {
-            model.addAttribute("msg", "账号异地登陆，请确认账号密码安全");
-            return "index";
-        } else {
-            return "dashboard";
-        }
+//        Boolean aBoolean = controllerUtil.LoginUtil(request);
+//        if (!aBoolean) {
+//            model.addAttribute("msg", "账号异地登陆，请确认账号密码安全");
+//            return "index";
+//        } else {
+        return "dashboard";
+//        }
     }
 
     //跳转注册学生界面
@@ -91,4 +95,9 @@ public class CurController {
         return "GG/GG";
     }
 
+    //跳转添加学生界面
+    @GetMapping("/user/getGrade")
+    public String userGetGrade() {
+        return "ResultInster";
+    }
 }
